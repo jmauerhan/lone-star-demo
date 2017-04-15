@@ -1,0 +1,26 @@
+version: '2'
+services:
+  chirper-api:
+    build:
+      context: .
+      dockerfile: src/dockerfile
+    volumes:
+      - ./:/var/www/public
+    environment:
+      - ISSUE_DB_HOST=chirper-db
+      - ISSUE_DB_PORT=5432
+      - ISSUE_DB_NAME=chirper
+      - ISSUE_DB_USER=postgres
+      - ISSUE_DB_PASSWORD=postgres
+    ports:
+      - "3000:80"
+    links:
+      - chirper-db
+  chirper-db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=chirper
+    ports:
+      - "5000:5432"
