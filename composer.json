@@ -10,8 +10,7 @@
   ],
   "require": {
     "php": "^7",
-    "silex/silex": "^2.0",
-    "justinrainbow/json-schema": "^5.2"
+    "silex/silex": "^2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1",
