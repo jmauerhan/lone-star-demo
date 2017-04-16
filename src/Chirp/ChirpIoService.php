@@ -7,8 +7,22 @@ use Chirper\Http\Response;
 
 class ChirpIoService
 {
-    public function create(Request $request):Response
-    {
+    /** @var JsonChirpTransformer */
+    private $jsonTransformer;
 
+    /** @var PersistenceDriver */
+    private $persistenceDriver;
+
+    public function __construct(JsonChirpTransformer $transformer, PersistenceDriver $persistenceDriver)
+    {
+        $this->jsonTransformer   = $transformer;
+        $this->persistenceDriver = $persistenceDriver;
+    }
+
+    public function create(Request $request): Response
+    {
+        $json = $request->getBody()->getContents();
+        $this->jsonTransformer->toChirp($json);
+        return new Response();
     }
 }
