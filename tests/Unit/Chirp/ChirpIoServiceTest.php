@@ -5,7 +5,9 @@ namespace Test\Unit\Chirp;
 use Chirper\Chirp\ChirpIoService;
 use Chirper\Chirp\JsonChirpTransformer;
 use Chirper\Chirp\PersistenceDriver;
+use Chirper\Chirp\UnableToCreateChirpResponse;
 use Chirper\Http\Request;
+use Chirper\JsonApi\InvalidJsonException;
 use Test\Unit\TestCase;
 
 class ChirpIoServiceTest extends TestCase
@@ -37,10 +39,22 @@ class ChirpIoServiceTest extends TestCase
 
     }
 
-//    public function testCreateReturnsFailureResponseWhenTransformerThrowsException()
-//    {
-//
-//    }
+    public function testCreateReturnsFailureResponseWhenTransformerThrowsException()
+    {
+        $json      = '{"data}';
+        $reason    = 'Invalid JSON: ' . $json;
+        $exception = new InvalidJsonException($reason);
+
+        $this->transformer->method('toChirp')
+                          ->willThrowException($exception);
+
+        $request  = new Request('POST', 'chirp', [], $json);
+        $service  = new ChirpIoService($this->transformer, $this->persistenceDriver);
+        $response = $service->create($request);
+
+        $this->assertInstanceOf(UnableToCreateChirpResponse::class, $response);
+
+    }
 //
 //    public function testCreatePersistsChirpReturnedFromTransformer()
 //    {

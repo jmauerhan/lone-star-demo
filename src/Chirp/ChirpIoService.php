@@ -4,6 +4,7 @@ namespace Chirper\Chirp;
 
 use Chirper\Http\Request;
 use Chirper\Http\Response;
+use Chirper\JsonApi\InvalidJsonException;
 
 class ChirpIoService
 {
@@ -22,7 +23,11 @@ class ChirpIoService
     public function create(Request $request): Response
     {
         $json = $request->getBody()->getContents();
-        $this->jsonTransformer->toChirp($json);
+        try {
+            $this->jsonTransformer->toChirp($json);
+        } catch (InvalidJsonException $e) {
+            return new UnableToCreateChirpResponse($e->getMessage());
+        }
         return new Response();
     }
 }
