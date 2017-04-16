@@ -33,6 +33,9 @@ $app->get('/', function () use ($app) {
 });
 
 $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
+
+//    $chirpIoService = new \Chirper\Chirp\ChirpIoService();
+
     $responseData = (object)[
         'data' => (object)[
             'type' => 'chirps',
