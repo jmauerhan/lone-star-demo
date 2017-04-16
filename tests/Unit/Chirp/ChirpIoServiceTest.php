@@ -7,8 +7,10 @@ use Chirper\Chirp\ChirpIoService;
 use Chirper\Chirp\JsonChirpTransformer;
 use Chirper\Chirp\PersistenceDriver;
 use Chirper\Chirp\UnableToCreateChirpResponse;
+use Chirper\Http\InternalServerErrorResponse;
 use Chirper\Http\Request;
 use Chirper\JsonApi\InvalidJsonException;
+use Chirper\Persistence\PersistenceDriverException;
 use Test\Unit\TestCase;
 
 class ChirpIoServiceTest extends TestCase
@@ -73,10 +75,18 @@ class ChirpIoServiceTest extends TestCase
         $service = new ChirpIoService($this->transformer, $this->persistenceDriver);
         $service->create($request);
     }
-//
-//    public function testCreateReturnsInternalErrorResponseWhenPersistenceDriverThrowsException()
-//    {
-//    }
+
+    public function testCreateReturnsInternalServerErrorResponseWhenPersistenceDriverThrowsException()
+    {
+        $this->persistenceDriver->method('create')
+                                ->willThrowException(new PersistenceDriverException());
+
+        $request  = new Request('POST', 'chirp');
+        $service  = new ChirpIoService($this->transformer, $this->persistenceDriver);
+        $response = $service->create($request);
+
+        $this->assertInstanceOf(InternalServerErrorResponse::class, $response);
+    }
 //
 //    public function testCreateReturnsChirpCreatedResponse()
 //    {
