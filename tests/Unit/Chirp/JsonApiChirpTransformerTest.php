@@ -44,7 +44,6 @@ class JsonApiChirpTransformerTest extends TestCase
         $transformer->toChirp($json);
     }
 
-
 //    public function testToChirpThrowsInvalidJsonApiExceptionWhenJsonApiInvalid()
 //    {
 //        $this->expectException(InvalidJsonException::class);
