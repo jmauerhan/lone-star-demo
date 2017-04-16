@@ -3,6 +3,7 @@
 namespace Test\Unit\Chirp;
 
 use Chirper\Chirp\Chirp;
+use Chirper\Chirp\ChirpCreatedResponse;
 use Chirper\Chirp\ChirpIoService;
 use Chirper\Chirp\JsonChirpTransformer;
 use Chirper\Chirp\PersistenceDriver;
@@ -87,8 +88,13 @@ class ChirpIoServiceTest extends TestCase
 
         $this->assertInstanceOf(InternalServerErrorResponse::class, $response);
     }
-//
-//    public function testCreateReturnsChirpCreatedResponse()
-//    {
-//    }
+
+    public function testCreateReturnsChirpCreatedResponse()
+    {
+        $request  = new Request('POST', 'chirp');
+        $service  = new ChirpIoService($this->transformer, $this->persistenceDriver);
+        $response = $service->create($request);
+
+        $this->assertInstanceOf(ChirpCreatedResponse::class, $response);
+    }
 }
