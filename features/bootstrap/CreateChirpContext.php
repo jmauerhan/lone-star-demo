@@ -18,6 +18,9 @@ class CreateChirpContext implements Context
     /** @var string */
     private $chirpText;
 
+    /** @var string */
+    private $chirpUuid;
+
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
@@ -42,10 +45,11 @@ class CreateChirpContext implements Context
      */
     public function iPostTheChirp()
     {
+        $this->chirpUuid = $this->faker->uuid();
         $obj = (object)[
             'data' => (object)[
                 'type' => 'chirp',
-                'id' => 'uuid',
+                'id' => $this->chirpUuid,
                 'attributes' => (object)[
                     'text' => $this->chirpText
                 ]
@@ -60,7 +64,19 @@ class CreateChirpContext implements Context
      */
     public function iShouldSeeItInMyTimeline()
     {
-        throw new PendingException();
+        $timelineResponse = $this->httpClient->get('/');
+        $responseJson = $timelineResponse->getBody()->getContents();
+        $response = json_decode($responseJson);
+        $chirps = $response->data;
+        foreach ($chirps AS $chirp) {
+            if ($chirp->id === $this->chirpUuid) {
+                if ($chirp->attributes->text === $this->chirpText) {
+                    return true;
+                }
+                throw new \Exception('A matching UUID was found, but the text did not match.');
+            }
+        }
+        throw new \Exception('A Chirp matching the UUID and text was not found');
     }
 
     /**
