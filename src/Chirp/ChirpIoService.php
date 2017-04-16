@@ -36,6 +36,6 @@ class ChirpIoService
             return new InternalServerErrorResponse();
         }
 
-        return new Response();
+        return new ChirpCreatedResponse($json);
     }
 }
