@@ -27,12 +27,10 @@ class ChirpIoService
         $json = $request->getBody()->getContents();
         try {
             $chirp = $this->jsonTransformer->toChirp($json);
-        } catch (InvalidJsonException $e) {
-            return new UnableToCreateChirpResponse($e->getMessage());
-        }
-        try {
             $this->persistenceDriver->create($chirp);
-        } catch (PersistenceDriverException $e) {
+        } catch (InvalidJsonException $invalidJsonException) {
+            return new UnableToCreateChirpResponse($invalidJsonException->getMessage());
+        } catch (PersistenceDriverException $persistenceDriverException) {
             return new InternalServerErrorResponse();
         }
 
