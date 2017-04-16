@@ -15,6 +15,24 @@ $app->get('/', function () use ($app) {
 });
 
 $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
+    $responseData = (object)[
+        'data' => [
+            (object)[
+                'type' => 'chirps',
+                'id' => 'uuid',
+                'attributes' => (object)[
+                    'text' => 'Chirp Text'
+                ]
+            ],
+            (object)[
+                'type' => 'chirps',
+                'id' => 'uuid-2',
+                'attributes' => (object)[
+                    'text' => 'Another Chirp'
+                ]
+            ],
+        ]
+    ];
     return $app->json([]);
 });
 
