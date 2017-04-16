@@ -5,11 +5,15 @@ namespace Test\Behavior\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Faker;
+use GuzzleHttp\Client;
 
 class CreateChirpContext implements Context
 {
     /** @var Faker\Generator */
     private $faker;
+
+    /** @var Client */
+    private $httpClient;
 
     /** @var string */
     private $chirpText;
@@ -17,6 +21,11 @@ class CreateChirpContext implements Context
     public function __construct()
     {
         $this->faker = Faker\Factory::create();
+        $clientOpt = [
+            'base_uri' => 'http://localhost:3000',
+        ];
+        $client = new Client($clientOpt);
+        $this->httpClient = $client;
     }
 
     /**
@@ -25,6 +34,7 @@ class CreateChirpContext implements Context
     public function iWriteAChirpWithOrLessCharacters($numCharacters)
     {
         $this->chirpText = $this->faker->realText($numCharacters);
+
     }
 
     /**
@@ -32,7 +42,17 @@ class CreateChirpContext implements Context
      */
     public function iPostTheChirp()
     {
-        throw new PendingException();
+        $obj = (object)[
+            'data' => (object)[
+                'type' => 'chirp',
+                'id' => 'uuid',
+                'attributes' => (object)[
+                    'text' => $this->chirpText
+                ]
+            ]
+        ];
+
+        $this->httpClient->post('chirp', ['json' => $obj]);
     }
 
     /**
