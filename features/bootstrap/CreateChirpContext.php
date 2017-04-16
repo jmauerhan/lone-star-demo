@@ -4,16 +4,27 @@ namespace Test\Behavior\Context;
 
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
+use Faker;
 
 class CreateChirpContext implements Context
 {
+    /** @var Faker\Generator */
+    private $faker;
+
+    /** @var string */
+    private $chirpText;
+
+    public function __construct()
+    {
+        $this->faker = Faker\Factory::create();
+    }
 
     /**
-     * @Given I write a Chirp with :arg1 or less characters
+     * @Given I write a Chirp with :numCharacters or less characters
      */
-    public function iWriteAChirpWithOrLessCharacters($arg1)
+    public function iWriteAChirpWithOrLessCharacters($numCharacters)
     {
-        throw new PendingException();
+        $this->chirpText = $this->faker->realText($numCharacters);
     }
 
     /**
