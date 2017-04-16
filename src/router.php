@@ -11,10 +11,6 @@ $app['debug'] = true;
 $app['debug.mode'] = 'dev';
 
 $app->get('/', function () use ($app) {
-    return $app->json([]);
-});
-
-$app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
     $responseData = (object)[
         'data' => [
             (object)[
@@ -33,7 +29,20 @@ $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
             ],
         ]
     ];
-    return $app->json([]);
+    return $app->json($responseData);
+});
+
+$app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
+    $responseData = (object)[
+        'data' => (object)[
+            'type' => 'chirps',
+            'id' => 'uuid',
+            'attributes' => (object)[
+                'text' => 'Chirp Text'
+            ]
+        ]
+    ];
+    return $app->json($responseData);
 });
 
 $app->run();
