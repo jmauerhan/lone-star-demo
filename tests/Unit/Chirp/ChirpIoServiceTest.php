@@ -10,7 +10,15 @@ class ChirpIoServiceTest extends TestCase
     {
     }
 
+    public function testCreateReturnsFailureResponseWhenTransformerThrowsException()
+    {
+    }
+
     public function testCreatePersistsChirpReturnedFromTransformer()
+    {
+    }
+
+    public function testCreateReturnsInternalErrorResponseWhenPersistenceDriverThrowsException()
     {
     }
 
