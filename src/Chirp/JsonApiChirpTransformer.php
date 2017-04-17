@@ -22,7 +22,16 @@ class JsonApiChirpTransformer implements JsonChirpTransformer
         if (property_exists($data, 'type') === false) {
             throw new InvalidJsonApiException();
         }
+        if (property_exists($data, 'id') === false) {
+            throw new InvalidJsonApiException();
+        }
+        if (property_exists($data, 'attributes') === false) {
+            throw new InvalidJsonApiException();
+        }
         $attributes = $data->attributes;
+        if (property_exists($attributes, 'text') === false) {
+            throw new InvalidJsonApiException();
+        }
         //Transform
         return new Chirp($attributes->text);
     }

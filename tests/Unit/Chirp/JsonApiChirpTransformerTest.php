@@ -60,7 +60,10 @@ class JsonApiChirpTransformerTest extends TestCase
     {
         return [
             'missingData' => ['{}'],
-            'missingType' => ['{"data":{}}']
+            'missingType' => ['{"data":{}}'],
+            'missingId' => ['{"data":{"type":"chirp"}}'],
+            'missingAttributes' => ['{"data":{"type":"chirp","id":"uuid"}}'],
+            'missingTextAttribute' => ['{"data":{"type":"chirp","id":"uuid","attributes":{}}}']
         ];
     }
 
