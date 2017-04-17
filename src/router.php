@@ -34,8 +34,12 @@ $app->get('/', function () use ($app) {
 
 $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
 
+    $dsn    = 'pgsql:dbname=chirper;host=chirper-db';
+    $dbUser = 'postgres';
+    $dbPass = 'postgres';
+    $pdo    = new PDO($dsn, $dbUser, $dbPass);
+
     $transformer       = new \Chirper\Chirp\JsonApiChirpTransformer();
-    $pdo               = new PDO();
     $persistenceDriver = new \Chirper\Chirp\PdoPersistenceDriver($pdo);
     $chirpIoService    = new \Chirper\Chirp\ChirpIoService($transformer, $persistenceDriver);
 
@@ -43,7 +47,7 @@ $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
 
     $response = $chirpIoService->create($request);
 
-    return $app->json($response->getStatusCode(), $response->getBody()->getContents());
+    return $app->json($response->getBody()->getContents(), $response->getStatusCode());
 });
 
 $app->run();
