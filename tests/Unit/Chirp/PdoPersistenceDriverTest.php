@@ -21,9 +21,11 @@ class PdoPersistenceDriverTest extends TestCase
         $chirp = new Chirp('Testing');
         $sql   = "INSERT INTO chirp(chirp_text) VALUES(:chirp_text)";
 
+        $statement = $this->createMock(\PDOStatement::class);
         $this->pdo->expects($this->once())
                   ->method('prepare')
-                  ->with($sql);
+                  ->with($sql)
+                  ->willReturn($statement);
 
         $driver = new PdoPersistenceDriver($this->pdo);
         $driver->create($chirp);
