@@ -4,6 +4,7 @@ namespace Test\Unit\Chirp;
 
 use Chirper\Chirp\Chirp;
 use Chirper\Chirp\JsonApiChirpTransformer;
+use Chirper\JsonApi\InvalidJsonApiException;
 use Chirper\JsonApi\InvalidJsonException;
 use Test\Unit\TestCase;
 
@@ -44,8 +45,22 @@ class JsonApiChirpTransformerTest extends TestCase
         $transformer->toChirp($json);
     }
 
-//    public function testToChirpThrowsInvalidJsonApiExceptionWhenJsonApiInvalid()
-//    {
-//        $this->expectException(InvalidJsonException::class);
-//    }
+    /**
+     * @dataProvider  invalidJsonProvider
+     */
+    public function testToChirpThrowsInvalidJsonApiExceptionWhenJsonApiInvalid(string $json)
+    {
+        $this->expectException(InvalidJsonApiException::class);
+
+        $transformer = new JsonApiChirpTransformer();
+        $transformer->toChirp($json);
+    }
+
+    public function invalidJsonProvider()
+    {
+        return [
+            ['{}'],
+        ];
+    }
+
 }
