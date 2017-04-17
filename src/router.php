@@ -6,8 +6,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Request AS SilexRequest;
 use Symfony\Component\HttpFoundation\Response AS SilexResponse;
 
-$app = new Silex\Application();
-$app['debug'] = true;
+$app               = new Silex\Application();
+$app['debug']      = true;
 $app['debug.mode'] = 'dev';
 
 $app->get('/', function () use ($app) {
@@ -34,18 +34,16 @@ $app->get('/', function () use ($app) {
 
 $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
 
-//    $chirpIoService = new \Chirper\Chirp\ChirpIoService();
+    $transformer       = new \Chirper\Chirp\JsonApiChirpTransformer();
+    $pdo               = new PDO();
+    $persistenceDriver = new \Chirper\Chirp\PdoPersistenceDriver($pdo);
+    $chirpIoService    = new \Chirper\Chirp\ChirpIoService($transformer, $persistenceDriver);
 
-    $responseData = (object)[
-        'data' => (object)[
-            'type' => 'chirps',
-            'id' => 'uuid',
-            'attributes' => (object)[
-                'text' => 'Chirp Text'
-            ]
-        ]
-    ];
-    return $app->json($responseData);
+    $request = new \Chirper\Http\Request('POST', 'chirp', [], $silexRequest->getContent());
+
+    $response = $chirpIoService->create($request);
+
+    return $app->json($response->getStatusCode(), $response->getBody()->getContents());
 });
 
 $app->run();
