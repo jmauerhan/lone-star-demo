@@ -27,7 +27,11 @@ class PdoPersistenceDriver implements PersistenceDriver
         } catch (\PDOException $PDOException) {
             throw new PersistenceDriverException();
         }
-        $preparedStmt->execute(['chirp_text' => $chirp->getText()]);
+
+        $executed = $preparedStmt->execute(['chirp_text' => $chirp->getText()]);
+        if ($executed === false) {
+            throw new PersistenceDriverException();
+        }
 
         return true;
     }
