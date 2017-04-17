@@ -33,9 +33,22 @@ class PdoPersistenceDriverTest extends TestCase
 //    {
 //    }
 //
-//    public function testCreateExecutesStatement()
-//    {
-//    }
+    public function testCreateExecutesStatement()
+    {
+        $chirp  = new Chirp('Testing');
+        $params = ['chirp_text' => 'Testing'];
+
+        $statement = $this->createMock(\PDOStatement::class);
+        $statement->expects($this->once())
+                  ->method('execute')
+                  ->with($params);
+
+        $this->pdo->method('prepare')
+                  ->willReturn($statement);
+
+        $driver = new PdoPersistenceDriver($this->pdo);
+        $driver->create($chirp);
+    }
 //
 //    public function testCreateThrowsExceptionWhenExecuteThrowsException()
 //    {

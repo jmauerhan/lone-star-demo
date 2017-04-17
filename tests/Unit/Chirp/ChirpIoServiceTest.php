@@ -65,7 +65,7 @@ class ChirpIoServiceTest extends TestCase
         $json    = '{"data":"valid chirp"}';
         $request = new Request('POST', 'chirp', [], $json);
 
-        $chirp = new Chirp();
+        $chirp = new Chirp('Test');
         $this->transformer->method('toChirp')
                           ->willReturn($chirp);
 
