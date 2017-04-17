@@ -4,6 +4,7 @@ namespace Test\Unit\Chirp;
 
 use Chirper\Chirp\Chirp;
 use Chirper\Chirp\PdoPersistenceDriver;
+use Chirper\Persistence\PersistenceDriverException;
 use Test\Unit\TestCase;
 
 class PdoPersistenceDriverTest extends TestCase
@@ -31,10 +32,18 @@ class PdoPersistenceDriverTest extends TestCase
         $driver->create($chirp);
     }
 
-//    public function testCreateThrowsExceptionWhenPrepareThrowsException()
-//    {
-//    }
-//
+    public function testCreateThrowsExceptionWhenPrepareThrowsException()
+    {
+        $this->expectException(PersistenceDriverException::class);
+        $chirp = new Chirp('Testing');
+
+        $this->pdo->method('prepare')
+                  ->willThrowException(new \PDOException());
+
+        $driver = new PdoPersistenceDriver($this->pdo);
+        $driver->create($chirp);
+    }
+
     public function testCreateExecutesStatement()
     {
         $chirp  = new Chirp('Testing');
