@@ -59,7 +59,8 @@ class JsonApiChirpTransformerTest extends TestCase
     public function invalidJsonProvider()
     {
         return [
-            ['{}'],
+            'missingData' => ['{}'],
+            'missingType' => ['{"data":{}}']
         ];
     }
 
