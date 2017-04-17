@@ -10,7 +10,12 @@
   ],
   "require": {
     "php": "^7",
-    "silex/silex": "^2.0"
+    "silex/silex": "^2.0",
+    "ramsey/uuid": "^3.6",
+    "twig/twig": "^2.3",
+    "behat/mink": "^1.7",
+    "behat/mink-goutte-driver": "^1.2",
+    "behat/mink-selenium2-driver": "^1.3"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.1",
