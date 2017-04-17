@@ -19,6 +19,6 @@ class PdoPersistenceDriver implements PersistenceDriver
      */
     public function create(Chirp $chirp): bool
     {
-
+        return true;
     }
 }
