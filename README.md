@@ -5,7 +5,7 @@
 - PHP 7
 - Composer
 
-### 
+### Recommended
 - [Postman App](https://www.getpostman.com/)
 
 ## Setup
