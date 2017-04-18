@@ -13,4 +13,6 @@ interface JsonChirpTransformer
      * @throws InvalidJsonException
      */
     public function toChirp(string $json): Chirp;
+
+    public function collectionToJson(ChirpCollection $chirpCollection): string;
 }

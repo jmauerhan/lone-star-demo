@@ -36,4 +36,11 @@ class ChirpIoService
 
         return new ChirpCreatedResponse($json);
     }
+
+    public function getTimeline(): TimelineResponse
+    {
+        $chirps = $this->persistenceDriver->getAll();
+        $json   = $this->jsonTransformer->collectionToJson($chirps);
+        return new TimelineResponse($json);
+    }
 }

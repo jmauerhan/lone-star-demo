@@ -3,6 +3,7 @@
 namespace Test\Unit\Chirp;
 
 use Chirper\Chirp\Chirp;
+use Chirper\Chirp\ChirpCollection;
 use Chirper\Chirp\JsonApiChirpTransformer;
 use Chirper\JsonApi\InvalidJsonApiException;
 use Chirper\JsonApi\InvalidJsonException;
@@ -65,6 +66,41 @@ class JsonApiChirpTransformerTest extends TestCase
             'missingAttributes' => ['{"data":{"type":"chirp","id":"uuid"}}'],
             'missingTextAttribute' => ['{"data":{"type":"chirp","id":"uuid","attributes":{}}}']
         ];
+    }
+
+    public function testCollectionToJsonReturnsJson()
+    {
+        $chirp  = new Chirp($this->faker->uuid, $this->faker->realText(50));
+        $chirp2 = new Chirp($this->faker->uuid, $this->faker->realText(50));
+        $chirps = new ChirpCollection([$chirp, $chirp2]);
+
+        $expectedJson
+            = <<<JSON
+            {
+                "data":[
+                    {
+                        "type":"chirps",
+                        "id":"{$chirp->getId()}",
+                        "attributes":{
+                            "text":"{$chirp->getText()}"
+                        }
+                    },
+                    {
+                        "type":"chirps",
+                        "id":"{$chirp2->getId()}",
+                        "attributes":{
+                            "text":"{$chirp2->getText()}"
+                        }
+                    }
+                ]
+            }
+JSON;
+
+        $transformer = new JsonApiChirpTransformer();
+        $json        = $transformer->collectionToJson($chirps);
+
+        $this->assertJsonStringEqualsJsonString($expectedJson, $json);
+
     }
 
 }

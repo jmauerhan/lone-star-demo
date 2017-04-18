@@ -35,4 +35,20 @@ class JsonApiChirpTransformer implements JsonChirpTransformer
         //Transform
         return new Chirp($data->id, $attributes->text);
     }
+
+    public function collectionToJson(ChirpCollection $chirpCollection): string
+    {
+        $data = [];
+        /** @var Chirp $chirp */
+        foreach ($chirpCollection AS $chirp) {
+            $attributes = (object)['text' => $chirp->getText()];
+            $data[]     = (object)[
+                'type' => 'chirps',
+                'id' => $chirp->getId(),
+                'attributes' => $attributes
+            ];
+        }
+        $result = (object)['data' => $data];
+        return json_encode($result);
+    }
 }

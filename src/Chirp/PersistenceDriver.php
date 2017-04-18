@@ -13,4 +13,6 @@ interface PersistenceDriver
      * @throws PersistenceDriverException
      */
     public function create(Chirp $chirp): bool;
+
+    public function getAll(): ChirpCollection;
 }
