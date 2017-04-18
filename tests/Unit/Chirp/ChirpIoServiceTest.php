@@ -12,6 +12,7 @@ use Chirper\Http\InternalServerErrorResponse;
 use Chirper\Http\Request;
 use Chirper\JsonApi\InvalidJsonException;
 use Chirper\Persistence\PersistenceDriverException;
+use Ramsey\Uuid\Uuid;
 use Test\Unit\TestCase;
 
 class ChirpIoServiceTest extends TestCase
@@ -65,7 +66,7 @@ class ChirpIoServiceTest extends TestCase
         $json    = '{"data":"valid chirp"}';
         $request = new Request('POST', 'chirp', [], $json);
 
-        $chirp = new Chirp('Test');
+        $chirp = new Chirp(Uuid::uuid4(), 'Test');
         $this->transformer->method('toChirp')
                           ->willReturn($chirp);
 

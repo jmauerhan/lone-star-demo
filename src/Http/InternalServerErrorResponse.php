@@ -11,8 +11,8 @@ namespace Chirper\Http;
 
 class InternalServerErrorResponse extends Response
 {
-    public function __construct()
+    public function __construct(string $message = null)
     {
-        parent::__construct(Response::INTERNAL_SERVER_ERROR, [], 'Sorry, something has gone wrong!');
+        parent::__construct(Response::INTERNAL_SERVER_ERROR, [], 'Sorry, something has gone wrong!' . PHP_EOL . $message);
     }
 }

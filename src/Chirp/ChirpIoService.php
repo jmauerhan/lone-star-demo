@@ -31,7 +31,7 @@ class ChirpIoService
         } catch (InvalidJsonException $invalidJsonException) {
             return new UnableToCreateChirpResponse($invalidJsonException->getMessage());
         } catch (PersistenceDriverException $persistenceDriverException) {
-            return new InternalServerErrorResponse();
+            return new InternalServerErrorResponse($persistenceDriverException->getMessage());
         }
 
         return new ChirpCreatedResponse($json);

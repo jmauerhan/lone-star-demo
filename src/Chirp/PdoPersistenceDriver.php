@@ -21,14 +21,14 @@ class PdoPersistenceDriver implements PersistenceDriver
      */
     public function create(Chirp $chirp): bool
     {
-        $sql = "INSERT INTO chirp(chirp_text) VALUES(:chirp_text)";
+        $sql = "INSERT INTO chirp(id, chirp_text) VALUES(:id, :chirp_text)";
         try {
             $preparedStmt = $this->pdo->prepare($sql);
         } catch (\PDOException $PDOException) {
-            throw new PersistenceDriverException();
+            throw new PersistenceDriverException($PDOException->getMessage());
         }
 
-        $executed = $preparedStmt->execute(['chirp_text' => $chirp->getText()]);
+        $executed = $preparedStmt->execute(['id' => $chirp->getId(), 'chirp_text' => $chirp->getText()]);
         if ($executed === false) {
             throw new PersistenceDriverException();
         }

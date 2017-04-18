@@ -28,7 +28,7 @@ class JsonApiChirpTransformerTest extends TestCase
 
         $json = json_encode($requestObject);
 
-        $expectedChirp = new Chirp($text);
+        $expectedChirp = new Chirp($uuid, $text);
 
         $transformer = new JsonApiChirpTransformer();
         $chirp       = $transformer->toChirp($json);

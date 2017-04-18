@@ -47,7 +47,7 @@ $app->post('chirp', function (SilexRequest $silexRequest) use ($app) {
 
     $response = $chirpIoService->create($request);
 
-    return $app->json($response->getBody()->getContents(), $response->getStatusCode());
+    return new \Symfony\Component\HttpFoundation\Response($response->getBody()->getContents(), $response->getStatusCode());
 });
 
 $app->run();

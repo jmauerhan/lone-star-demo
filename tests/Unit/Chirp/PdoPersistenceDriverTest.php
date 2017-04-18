@@ -19,8 +19,8 @@ class PdoPersistenceDriverTest extends TestCase
 
     public function testCreatePreparesStatement()
     {
-        $chirp = new Chirp('Testing');
-        $sql   = "INSERT INTO chirp(chirp_text) VALUES(:chirp_text)";
+        $chirp = new Chirp($this->faker->uuid, 'Testing');
+        $sql   = "INSERT INTO chirp(id, chirp_text) VALUES(:id, :chirp_text)";
 
         $statement = $this->createMock(\PDOStatement::class);
         $this->pdo->expects($this->once())
@@ -35,7 +35,7 @@ class PdoPersistenceDriverTest extends TestCase
     public function testCreateThrowsExceptionWhenPrepareThrowsException()
     {
         $this->expectException(PersistenceDriverException::class);
-        $chirp = new Chirp('Testing');
+        $chirp = new Chirp($this->faker->uuid, 'Testing');
 
         $this->pdo->method('prepare')
                   ->willThrowException(new \PDOException());
@@ -46,8 +46,10 @@ class PdoPersistenceDriverTest extends TestCase
 
     public function testCreateExecutesStatement()
     {
-        $chirp  = new Chirp('Testing');
-        $params = ['chirp_text' => 'Testing'];
+        $uuid   = $this->faker->uuid;
+        $chirp  = new Chirp($uuid, 'Testing');
+        $params = ['chirp_text' => 'Testing',
+                   'id' => $uuid];
 
         $statement = $this->createMock(\PDOStatement::class);
         $statement->expects($this->once())
@@ -65,7 +67,7 @@ class PdoPersistenceDriverTest extends TestCase
     {
         $this->expectException(PersistenceDriverException::class);
 
-        $chirp = new Chirp('Testing');
+        $chirp = new Chirp($this->faker->uuid, 'Testing');
 
         $statement = $this->createMock(\PDOStatement::class);
         $statement->method('execute')
@@ -79,7 +81,7 @@ class PdoPersistenceDriverTest extends TestCase
 
     public function testCreateReturnsTrueWhenChirpInserted()
     {
-        $chirp  = new Chirp('Testing');
+        $chirp  = new Chirp($this->faker->uuid, 'Testing');
         $params = ['chirp_text' => 'Testing'];
 
         $statement = $this->createMock(\PDOStatement::class);

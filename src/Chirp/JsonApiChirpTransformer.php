@@ -33,6 +33,6 @@ class JsonApiChirpTransformer implements JsonChirpTransformer
             throw new InvalidJsonApiException();
         }
         //Transform
-        return new Chirp($attributes->text);
+        return new Chirp($data->id, $attributes->text);
     }
 }
