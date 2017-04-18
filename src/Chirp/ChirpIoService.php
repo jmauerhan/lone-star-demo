@@ -41,6 +41,6 @@ class ChirpIoService
     {
         $chirps = $this->persistenceDriver->getAll();
         $json   = $this->jsonTransformer->collectionToJson($chirps);
-        return new TimelineResponse($json);
+        return new TimelineResponse(200, [], $json);
     }
 }

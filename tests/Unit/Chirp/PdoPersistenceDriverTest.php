@@ -3,6 +3,7 @@
 namespace Test\Unit\Chirp;
 
 use Chirper\Chirp\Chirp;
+use Chirper\Chirp\ChirpCollection;
 use Chirper\Chirp\PdoPersistenceDriver;
 use Chirper\Persistence\PersistenceDriverException;
 use Test\Unit\TestCase;
@@ -90,5 +91,44 @@ class PdoPersistenceDriverTest extends TestCase
 
         $driver = new PdoPersistenceDriver($this->pdo);
         $this->assertTrue($driver->create($chirp));
+    }
+
+    public function testGetAllPreparesStatement()
+    {
+        $sql = "SELECT id, chirp_text FROM chirp";
+
+        $statement = $this->createMock(\PDOStatement::class);
+        $this->pdo->expects($this->once())
+                  ->method('prepare')
+                  ->with($sql)
+                  ->willReturn($statement);
+
+        $driver = new PdoPersistenceDriver($this->pdo);
+        $driver->getAll();
+
+    }
+
+    public function testGetAllReturnsChirps()
+    {
+        $chirp  = new Chirp($this->faker->uuid, 'Testing');
+        $chirp2 = new Chirp($this->faker->uuid, 'Test 2');
+
+        $expectedCollection = new ChirpCollection([$chirp, $chirp2]);
+
+        $results = [
+            ['id' => $chirp->getId(), 'text' => $chirp->getText()],
+            ['id' => $chirp2->getId(), 'text' => $chirp2->getText()],
+        ];
+
+        $statement = $this->createMock(\PDOStatement::class);
+        $statement->method('fetchAll')
+                  ->willReturn($results);
+
+        $this->pdo->method('prepare')
+                  ->willReturn($statement);
+
+        $driver     = new PdoPersistenceDriver($this->pdo);
+        $collection = $driver->getAll();
+        $this->assertEquals($expectedCollection, $collection);
     }
 }
