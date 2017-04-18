@@ -40,13 +40,14 @@ class PdoPersistenceDriver implements PersistenceDriver
     {
         $sql  = "SELECT id, chirp_text FROM chirp";
         $stmt = $this->pdo->prepare($sql);
-
         $chirps = [];
 
+        $stmt->execute();
         $results = $stmt->fetchAll();
+
         if (count($results) > 0) {
             foreach ($results AS $result) {
-                $chirps[] = new Chirp($result['id'], $result['text']);
+                $chirps[] = new Chirp($result['id'], $result['chirp_text']);
             }
         }
         return new ChirpCollection($chirps);
