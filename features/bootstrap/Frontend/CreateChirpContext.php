@@ -40,7 +40,7 @@ class CreateChirpContext implements Context
     {
         $this->chirpText = $this->faker->realText($numCharacters);
         $this->session->visit($this->host);
-        $page = $this->session->getPage()
+        $page = $this->session->getPage();
         $page->fillField('Chirp', $this->chirpText);
     }
 
