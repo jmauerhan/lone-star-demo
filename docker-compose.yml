@@ -24,3 +24,9 @@ services:
       - POSTGRES_DB=chirper
     ports:
       - "5000:5432"
+  chirper-fe:
+    build:
+      context: .
+      dockerfile: frontend/dockerfile
+    volumes:
+      - ./:/var/www/public
