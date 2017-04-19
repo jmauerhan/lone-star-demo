@@ -116,8 +116,8 @@ class PdoPersistenceDriverTest extends TestCase
         $expectedCollection = new ChirpCollection([$chirp, $chirp2]);
 
         $results = [
-            ['id' => $chirp->getId(), 'text' => $chirp->getText()],
-            ['id' => $chirp2->getId(), 'text' => $chirp2->getText()],
+            ['id' => $chirp->getId(), 'chirp_text' => $chirp->getText()],
+            ['id' => $chirp2->getId(), 'chirp_text' => $chirp2->getText()],
         ];
 
         $statement = $this->createMock(\PDOStatement::class);
