@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Behavior\Context;
+namespace Test\Behavior\Context\Api;
 
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
@@ -23,11 +23,11 @@ class CreateChirpContext implements Context
 
     public function __construct()
     {
-        $this->faker = Faker\Factory::create();
-        $clientOpt = [
+        $this->faker      = Faker\Factory::create();
+        $clientOpt        = [
             'base_uri' => 'http://localhost:3000',
         ];
-        $client = new Client($clientOpt);
+        $client           = new Client($clientOpt);
         $this->httpClient = $client;
     }
 
@@ -46,7 +46,7 @@ class CreateChirpContext implements Context
     public function iPostTheChirp()
     {
         $this->chirpUuid = $this->faker->uuid();
-        $obj = (object)[
+        $obj             = (object)[
             'data' => (object)[
                 'type' => 'chirp',
                 'id' => $this->chirpUuid,
@@ -65,9 +65,9 @@ class CreateChirpContext implements Context
     public function iShouldSeeItInMyTimeline()
     {
         $timelineResponse = $this->httpClient->get('/');
-        $responseJson = $timelineResponse->getBody()->getContents();
-        $response = json_decode($responseJson);
-        $chirps = $response->data;
+        $responseJson     = $timelineResponse->getBody()->getContents();
+        $response         = json_decode($responseJson);
+        $chirps           = $response->data;
         foreach ($chirps AS $chirp) {
             if ($chirp->id === $this->chirpUuid) {
                 if ($chirp->attributes->text === $this->chirpText) {
