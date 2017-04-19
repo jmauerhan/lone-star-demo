@@ -30,3 +30,5 @@ services:
       dockerfile: frontend/dockerfile
     volumes:
       - ./:/var/www/public
+    ports:
+      - "8080:80"
