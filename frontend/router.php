@@ -13,11 +13,26 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . DIRECTORY_SEPARATOR . 'views',
 ));
 
-$app->get('/', function () use ($app, $chirpIoService) {
-    return $app['twig']->render('index.twig');
+$clientOpt = ['base_uri' => 'http://chirper-api'];
+$client    = new \GuzzleHttp\Client($clientOpt);
+
+$app->get('/', function () use ($app, $client) {
+
+    $response     = $client->get('/');
+    $responseJson = $response->getBody()->getContents();
+    $obj          = json_decode($responseJson);
+    $data         = $obj->data;
+
+    $chirps = [];
+    foreach ($data AS $item) {
+        $chirp    = new \Chirper\Chirp\Chirp($item->id, $item->attributes->text);
+        $chirps[] = $chirp;
+    }
+
+    return $app['twig']->render('index.twig', ['chirps' => $chirps]);
 });
 
-$app->post('chirp', function (SilexRequest $silexRequest) use ($app, $chirpIoService) {
+$app->post('chirp', function (SilexRequest $silexRequest) use ($app, $client) {
 
 });
 

@@ -58,10 +58,14 @@
 <div class="container">
 
     <div class="starter-template">
-        <form>
+        <form action="/chirp" method="POST">
             <input type="text" class="form-control" name="chirp" placeholder="Chirp"/>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
+
+        {% for chirp in chirps %}
+            <div class="well">{{ chirp.getText() }}</div>
+        {% endfor %}
     </div>
 
 </div><!-- /.container -->

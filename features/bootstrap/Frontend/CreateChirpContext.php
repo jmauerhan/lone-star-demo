@@ -58,7 +58,10 @@ class CreateChirpContext implements Context
      */
     public function iShouldSeeItInMyTimeline()
     {
-        throw new PendingException();
+        $page = $this->session->getPage();
+        if ($page->hasContent($this->chirpText) !== true) {
+            throw new \Exception("Chirp Text of: '{$this->chirpText}' Not Found");
+        }
     }
 
     /**

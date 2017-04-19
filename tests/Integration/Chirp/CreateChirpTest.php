@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Integration;
+namespace Test\Integration\Chirp;
 
 use Chirper\Http\Request;
 use GuzzleHttp\Client;
