@@ -15,22 +15,22 @@ class JsonApiChirpTransformer implements JsonChirpTransformer
             throw new InvalidJsonException();
         }
         if (property_exists($object, 'data') === false) {
-            throw new InvalidJsonApiException();
+            throw new InvalidJsonApiException('Missing data');
         }
         $data = $object->data;
 
         if (property_exists($data, 'type') === false) {
-            throw new InvalidJsonApiException();
+            throw new InvalidJsonApiException('Missing data->type');
         }
         if (property_exists($data, 'id') === false) {
-            throw new InvalidJsonApiException();
+            throw new InvalidJsonApiException('Missing data->id');
         }
         if (property_exists($data, 'attributes') === false) {
-            throw new InvalidJsonApiException();
+            throw new InvalidJsonApiException('Missing data->attributes');
         }
         $attributes = $data->attributes;
         if (property_exists($attributes, 'text') === false) {
-            throw new InvalidJsonApiException();
+            throw new InvalidJsonApiException('Missing data->attributes->text');
         }
         //Transform
         return new Chirp($data->id, $attributes->text);

@@ -33,7 +33,18 @@ $app->get('/', function () use ($app, $client) {
 });
 
 $app->post('chirp', function (SilexRequest $silexRequest) use ($app, $client) {
+    $payloadObject = (object)[
+        'data' => (object)[
+            'type' => 'chirp',
+            'id' => \Ramsey\Uuid\Uuid::uuid4(),
+            'attributes' => (object)[
+                'text' => $_POST['chirp']
+            ]
+        ]
+    ];
 
+    $response = $client->post('chirp', ['json' => $payloadObject]);
+    return $app->redirect('/');
 });
 
 $app->run();
