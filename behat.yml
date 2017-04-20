@@ -1,0 +1,6 @@
+default:
+    suites:
+        api:
+            contexts: [Test\Behavior\Context\Api\CreateChirpContext]
+        frontend:
+            contexts: [Test\Behavior\Context\Frontend\CreateChirpContext]
